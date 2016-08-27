@@ -24,27 +24,41 @@ def run_game():
     # 设置标题
     pygame.display.set_caption('Liu and Li')
 
+    # 设置点击的按钮
     play_button = Button(ai_settings, screen, 'Play')
 
-    # 保存游戏状态
+    # 保存游戏状态, 将状态保存在同一个地方
     stats = GameStats(ai_settings)
 
+    # 对应角色的初始化
+    # 下面的
     ship = Ship(ai_settings, screen)
+    # 子弹
     bullets = Group()
+    # 上面的
     aliens = Group()
+    # 记分板
     sb = Scoreboard(ai_settings, screen, stats)
 
+    # 创建上面的一群飘着的东西
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
+    # 不停地监听键盘输入和刷新界面
     while True:
+        # 监听键盘, 做出对应的反应
         gf.check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets)
 
+        # 判断时候在游戏中
         if stats.game_active:
+            # 更新下面的位置
             ship.update()
+            # 更新子弹
             gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
+            # 更新上面的
             gf.update_aliens(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
+        # 刷新界面
         gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
 
-
-run_game()
+if __name__ == '__main__':
+    run_game()
